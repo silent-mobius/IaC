@@ -1,0 +1,19 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# All Vagrant configuration is done below. The "2" in Vagrant.configure
+# configures the configuration version (we support older styles for
+# backwards compatibility). Please don't change it unless you know what
+# you're doing.
+Vagrant.configure("2") do |config|
+  config.vm.define "nfs" do |nfs|
+    nfs.vm.box="centos/7"
+    nfs.vm.hostname="nfswww"
+    nfs.vm.network "private_network", ip: "10.0.0.30"
+  end
+   config.vm.define "nfs2" do |nfs2|
+      nfs2.vm.box="centos/7"
+      nfs2.vm.hostname="nfsresource"
+      nfs2.vm.network "private_network", ip: "10.0.0.31 "
+    end
+end
