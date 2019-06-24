@@ -5,6 +5,28 @@
 # configures the configuration version (we support older styles for
 # backwards compatibility). Please don't change it unless you know what
 # you're doing.
+
+$script2 = <<-SCRIPT
+echo "Starting Provisioning..."
+
+SCRIPT
+
+$script = <<-SCRIPT
+echo "Starting Provisioning..."
+
+SCRIPT
+##############################################################################
 Vagrant.configure("2") do |config|
-  
+  config.vm.define "str" do |str|
+    str.vm.box="centos/7"
+    str.vm.hostname="gitserver"
+    str.vm.network "private_network", ip: "10.0.0.61"
+    str.vm.provision "shell", inline: $script2
+  end
+  config.vm.define "str2" do |str2|
+    str2.vm.box="centos/7"
+    str2.vm.hostname="gitclient"
+    str2.vm.network "private_network", ip: "10.0.0.60"
+    str2.vm.provision "shell", inline: $script
+  end
 end
