@@ -5,7 +5,28 @@
 # configures the configuration version (we support older styles for
 # backwards compatibility). Please don't change it unless you know what
 # you're doing.
+$script = <<-SCRIPT
+echo "Starting Provisioning..."
+
+SCRIPT
+
+$script2 = <<-SCRIPT
+echo "Starting Provisioning..."
+
+SCRIPT
+
 Vagrant.configure("2") do |config|
+   config.vm.define "db" do |db|
+      db.vm.box="centos/7"
+      db.vm.hostname="dbsrv"
+      db.vm.network "private_network", ip: "10.0.0.11"
+      db.vm.provision "shell", inline: $script
+    end
 
-
+    config.vm.define "dbc" do |dbc|
+      dbc.vm.box="centos/7"
+      dbc.vm.hostname="nfswww"
+      dbc.vm.network "private_network", ip: "10.0.0.10"
+      dbc.vm.provision "shell", inline: $script2
+    end
 end
