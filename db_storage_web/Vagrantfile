@@ -25,7 +25,7 @@ Vagrant.configure("2") do |config|
 
     config.vm.define "dbc" do |dbc|
       dbc.vm.box="centos/7"
-      dbc.vm.hostname="nfswww"
+      dbc.vm.hostname="dbclient"
       dbc.vm.network "private_network", ip: "10.0.0.10"
       dbc.vm.provision "shell", inline: $script2
     end

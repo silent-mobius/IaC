@@ -5,6 +5,34 @@
 # configures the configuration version (we support older styles for
 # backwards compatibility). Please don't change it unless you know what
 # you're doing.
+$script = <<-SCRIPT
+echo "Starting Provisioning..."
+
+SCRIPT
+
+$script2 = <<-SCRIPT
+echo "Starting Provisioning..."
+
+SCRIPT
+
 Vagrant.configure("2") do |config|
-  
+  config.vm.define "dhcp" do |dhcp|
+     dhcp.vm.box="centos/7"
+     dhcp.vm.hostname="dhcpsrv"
+     dhcp.vm.network "private_network", ip: "10.0.0.102"
+     dhcp.vm.provision "shell", inline: $script
+   end
+   config.vm.define "dns" do |dns|
+      dns.vm.box="centos/7"
+      dns.vm.hostname="dnssrv"
+      dns.vm.network "private_network", ip: "10.0.0.101"
+      dns.vm.provision "shell", inline: $script
+    end
+
+    config.vm.define "dnsc" do |dnsc|
+      dnsc.vm.box="centos/7"
+      dnsc.vm.hostname="dnsclient"
+      dnsc.vm.network "private_network", ip: "10.0.0.100"
+      dnsc.vm.provision "shell", inline: $script2
+    end
 end
