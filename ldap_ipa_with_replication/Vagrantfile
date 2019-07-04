@@ -1,0 +1,35 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# All Vagrant configuration is done below. The "2" in Vagrant.configure
+# configures the configuration version (we support older styles for
+# backwards compatibility). Please don't change it unless you know what
+# you're doing.
+
+$script = <<-SCRIPT
+echo "Starting Provisioning..."
+yum -y install ipa-server
+yum -y install memcached
+sleep 2
+echo "10.0.0.110 ldap1.example.com" >> /etc/hosts
+echo "10.0.0.111 ldap2.example.com" >> /etc/hosts
+sleep 2
+ipa-server-install
+SCRIPT
+
+
+Vagrant.configure("2") do |config|
+  config.vm.define "ipa" do |ipa|
+     ipa.vm.box="centos/7"
+     ipa.vm.hostname="freeipasrv"
+     ipa.vm.network "private_network", ip: "10.0.0.110"
+     ipa.vm.provision "shell", inline: $script
+   end
+
+   config.vm.define "ipa2" do |ipa2|
+      ipa2.vm.box="centos/7"
+      ipa2.vm.hostname="freeipasrv2"
+      ipa2.vm.network "private_network", ip: "10.0.0.111"
+      ipa2.vm.provision "shell", inline: $script
+    end
+end
