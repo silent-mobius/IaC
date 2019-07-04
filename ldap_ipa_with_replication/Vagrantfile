@@ -24,14 +24,21 @@ Vagrant.configure("2") do |config|
   config.vm.define "ipa" do |ipa|
      ipa.vm.box="centos/7"
      ipa.vm.hostname="freeipasrv"
-     ipa.vm.network "private_network", ip: "10.0.0.110"
+     ipa.vm.network "private_network", ip: "10.0.10.110"
      ipa.vm.provision "shell", inline: $script
    end
 
    config.vm.define "ipa2" do |ipa2|
       ipa2.vm.box="centos/7"
       ipa2.vm.hostname="freeipasrv2"
-      ipa2.vm.network "private_network", ip: "10.0.0.111"
+      ipa2.vm.network "private_network", ip: "10.0.10.111"
       ipa2.vm.provision "shell", inline: $script
     end
+
+    config.vm.define "ipa3" do |ipa3|
+       ipa3.vm.box="centos/7"
+       ipa3.vm.hostname="freeipaclient"
+       ipa3.vm.network "private_network", ip: "10.0.10.112"
+       ipa3.vm.provision "shell", inline: $script
+     end
 end
