@@ -25,6 +25,10 @@ SCRIPT
 $client_script = <<-SCRIPT
 echo "Starting Provisioning..."
 yum -y install ipa-client
+sleep 2
+echo "10.0.10.110 ldap1.example.com ldap1" >> /etc/hosts
+echo "10.0.10.111 ldap2.example.com ldap2" >> /etc/hosts
+echo "10.0.10.112 client.example.com client" >> /etc/hosts
 SCRIPT
 
 Vagrant.configure("2") do |config|
