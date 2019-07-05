@@ -22,6 +22,10 @@ sleep 2
 #ipa-server-install
 SCRIPT
 
+$client_script = <<-SCRIPT
+echo "Starting Provisioning..."
+yum -y install ipa-client
+SCRIPT
 
 Vagrant.configure("2") do |config|
   config.vm.define "ipa" do |ipa|
@@ -46,6 +50,6 @@ Vagrant.configure("2") do |config|
        ipa3.vm.box="centos/7"
        ipa3.vm.hostname="freeipaclient"
        ipa3.vm.network "private_network", ip: "10.0.10.112"
-       ipa3.vm.provision "shell", inline: $script
+       ipa3.vm.provision "shell", inline: $client_script
      end
 end
