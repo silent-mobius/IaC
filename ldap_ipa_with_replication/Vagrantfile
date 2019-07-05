@@ -34,7 +34,7 @@ SCRIPT
 Vagrant.configure("2") do |config|
   config.vm.define "ipa" do |ipa|
      ipa.vm.box="centos/7"
-     ipa.vm.hostname="freeipasrv"
+     ipa.vm.hostname="ldap1"
      ipa.vm.network "private_network", ip: "10.0.10.110"
      ipa.vm.network "forwarded_port" guest:80, host:8080
      ipa.vm.network "forwarded_port" guest:443, host:8043
@@ -43,7 +43,7 @@ Vagrant.configure("2") do |config|
 
    config.vm.define "ipa2" do |ipa2|
       ipa2.vm.box="centos/7"
-      ipa2.vm.hostname="freeipasrv2"
+      ipa2.vm.hostname="ldap2"
       ipa2.vm.network "private_network", ip: "10.0.10.111"
       ipa.vm.network "forwarded_port" guest:80, host:8080
       ipa.vm.network "forwarded_port" guest:443, host:8043
@@ -52,7 +52,7 @@ Vagrant.configure("2") do |config|
 
     config.vm.define "ipa3" do |ipa3|
        ipa3.vm.box="centos/7"
-       ipa3.vm.hostname="freeipaclient"
+       ipa3.vm.hostname="client"
        ipa3.vm.network "private_network", ip: "10.0.10.112"
        ipa3.vm.provision "shell", inline: $client_script
      end
