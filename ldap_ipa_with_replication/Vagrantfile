@@ -8,6 +8,7 @@
 
 $script = <<-SCRIPT
 echo "Starting Provisioning..."
+yum upgrade -y 
 yum -y install ipa-server.x86_64
 yum -y install ipa-server-dns.noarch
 yum -y install ipa-server-trust-ad.x86_64
@@ -19,6 +20,7 @@ echo "10.0.10.110 ldap1.example.com ldap1" >> /etc/hosts
 echo "10.0.10.111 ldap2.example.com ldap2" >> /etc/hosts
 echo "10.0.10.112 client.example.com client" >> /etc/hosts
 sleep 2
+sed -i 's/^SELINUX=enforcing/SELINUX=permissive/' /etc/selinux/config
 #ipa-server-install
 SCRIPT
 
