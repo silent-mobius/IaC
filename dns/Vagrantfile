@@ -7,7 +7,7 @@
 # you're doing.
 $script = <<-SCRIPT
 echo "Starting Provisioning..."
-
+yum -y install bind bind-utils
 SCRIPT
 
 $script2 = <<-SCRIPT
@@ -18,14 +18,14 @@ SCRIPT
 Vagrant.configure("2") do |config|
    config.vm.define "dns" do |dns|
       dns.vm.box="centos/7"
-      dns.vm.hostname="nfsresource"
+      dns.vm.hostname="dns_client"
       dns.vm.network "private_network", ip: "10.0.0.21"
       dns.vm.provision "shell", inline: $script
     end
 
     config.vm.define "dnsc" do |dnsc|
       dnsc.vm.box="centos/7"
-      dnsc.vm.hostname="nfswww"
+      dnsc.vm.hostname="dns"
       dnsc.vm.network "private_network", ip: "10.0.0.20"
       dnsc.vm.provision "shell", inline: $script2
     end
