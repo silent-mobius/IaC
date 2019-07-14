@@ -13,20 +13,21 @@ SCRIPT
 $script2 = <<-SCRIPT
 echo "Starting Provisioning..."
 yum -y install  bind-utils
+echo "nameserver 10.0.0.20" > /etc/resolv.conf
 SCRIPT
 
 Vagrant.configure("2") do |config|
    config.vm.define "dns" do |dns|
       dns.vm.box="centos/7"
-      dns.vm.hostname="dns_client"
-      dns.vm.network "private_network", ip: "10.0.0.21"
+      dns.vm.hostname="dns"
+      dns.vm.network "private_network", ip: "10.0.0.20"
       dns.vm.provision "shell", inline: $script
     end
 
     config.vm.define "dnsc" do |dnsc|
       dnsc.vm.box="centos/7"
-      dnsc.vm.hostname="dns"
-      dnsc.vm.network "private_network", ip: "10.0.0.20"
+      dnsc.vm.hostname="dns_client"
+      dnsc.vm.network "private_network", ip: "10.0.0.21"
       dnsc.vm.provision "shell", inline: $script2
     end
 end
