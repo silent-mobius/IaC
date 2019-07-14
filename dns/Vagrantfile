@@ -8,6 +8,8 @@
 $script = <<-SCRIPT
 echo "Starting Provisioning..."
 yum -y install bind bind-utils
+sleep 2 
+systemctl enable --now named
 SCRIPT
 
 $script2 = <<-SCRIPT
