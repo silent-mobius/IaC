@@ -7,32 +7,26 @@
 # you're doing.
 $script = <<-SCRIPT
 echo "Starting Provisioning..."
-
+yum -y install bind bind-utils dhcp
 SCRIPT
 
 $script2 = <<-SCRIPT
 echo "Starting Provisioning..."
-
+yum -y install  dhclient bind-utils
 SCRIPT
 
 Vagrant.configure("2") do |config|
-  config.vm.define "dhcp" do |dhcp|
-     dhcp.vm.box="centos/7"
-     dhcp.vm.hostname="dhcpsrv"
-     dhcp.vm.network "private_network", ip: "10.0.0.102"
-     dhcp.vm.provision "shell", inline: $script
-   end
    config.vm.define "dns" do |dns|
       dns.vm.box="centos/7"
-      dns.vm.hostname="dnssrv"
-      dns.vm.network "private_network", ip: "10.0.0.101"
+      dns.vm.hostname="dnsdhcpsrv"
+      dns.vm.network "private_network", ip: "10.0.10.100"
       dns.vm.provision "shell", inline: $script
     end
 
     config.vm.define "dnsc" do |dnsc|
       dnsc.vm.box="centos/7"
       dnsc.vm.hostname="dnsclient"
-      dnsc.vm.network "private_network", ip: "10.0.0.100"
+      dnsc.vm.network "private_network", ip: "10.0.10.101"
       dnsc.vm.provision "shell", inline: $script2
     end
 end
