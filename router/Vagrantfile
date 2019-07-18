@@ -1,0 +1,56 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# All Vagrant configuration is done below. The "2" in Vagrant.configure
+# configures the configuration version (we support older styles for
+# backwards compatibility). Please don't change it unless you know what
+# you're doing.
+$script = <<-SCRIPT
+echo "Starting Provisioning..."
+yum -y dhcp
+sleep 1
+echo "'10.0.10.111 client1' >> /etc/hosts"
+echo '10.0.10.112 client1' >> /etc/hosts
+echo "BOOTPROTO=static
+ONBOOT=yes
+IPADDR="<PUBLIC_IP>"
+NETMASK="<PUBLIC_NETMASK>"
+GATEWAY="<PUBLIC_DEFAULT_GATEWAY>"
+DNS1="<PUBLIC_DNS>"
+ZONE=external" > /etc/sysconfig/network-scripts/ifcfg-ens0p8
+
+sleep 1
+echo "net.ipv4.ip_forward=1" > etc/sysctl.d/ip_forward.conf
+sysctl -p /etc/sysctl.d/ip_forward.conf
+sleep 1
+firewall-cmd --permanent --direct --passthrough ipv4 -t nat -I POSTROUTING -o ens0p8 -j MASQUERADE -s 10.0.10.0/24
+firewall-cmd --change-interface=ens0p8 --zone=external --permanent
+firewall-cmd --set-default-zone=internal
+firewall-cmd --complete-reload
+systemctl restart network && systemctl restart firewalld
+
+SCRIPT
+
+
+
+Vagrant.configure("2") do |config|
+  config.vm.define "rtr" do |rtr|
+     rtr.vm.box="centos/7"
+     rtr.vm.hostname="router"
+     rtr.vm.network "private_network", ip: "10.0.10.110"
+     rtr.vm.network "public_network"
+     rtr.vm.provision "shell", inline: $script
+   end
+
+   config.vm.define "ipa" do |ipa|
+      ipa.vm.box="centos/7"
+      ipa.vm.hostname="netclient1"
+      ipa.vm.network "private_network", ip: "10.0.10.111"
+    end
+
+    config.vm.define "ipa" do |ipa|
+       ipa.vm.box="centos/7"
+       ipa.vm.hostname="netclient2"
+       ipa.vm.network "private_network", ip: "10.0.10.112"
+     end
+end
