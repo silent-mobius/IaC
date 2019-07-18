@@ -7,7 +7,7 @@
 # you're doing.
 $script = <<-SCRIPT
 echo "Starting Provisioning..."
-yum -y dhcp
+yum -y insall dhcp bind bind-utils
 sleep 1
 echo "'10.0.10.111 client1' >> /etc/hosts"
 echo '10.0.10.112 client1' >> /etc/hosts
@@ -38,19 +38,19 @@ Vagrant.configure("2") do |config|
      rtr.vm.box="centos/7"
      rtr.vm.hostname="router"
      rtr.vm.network "private_network", ip: "10.0.10.110"
-     rtr.vm.network "public_network"
+     rtr.vm.network "public_network", bridge: "wlp3s0:ens0p8"
      rtr.vm.provision "shell", inline: $script
    end
 
-   config.vm.define "ipa" do |ipa|
-      ipa.vm.box="centos/7"
-      ipa.vm.hostname="netclient1"
-      ipa.vm.network "private_network", ip: "10.0.10.111"
+   config.vm.define "client1" do |client1|
+      client1.vm.box="centos/7"
+      client1.vm.hostname="netclient1"
+      client1.vm.network "private_network", ip: "10.0.10.111"
     end
 
-    config.vm.define "ipa" do |ipa|
-       ipa.vm.box="centos/7"
-       ipa.vm.hostname="netclient2"
-       ipa.vm.network "private_network", ip: "10.0.10.112"
+    config.vm.define "client2" do |client2|
+       client2.vm.box="centos/7"
+       client2.vm.hostname="netclient2"
+       client2.vm.network "private_network", ip: "10.0.10.112"
      end
 end
