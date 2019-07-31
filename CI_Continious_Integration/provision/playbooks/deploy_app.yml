@@ -1,0 +1,11 @@
+---
+ - name: deploying application to web server
+   task:
+    name: install web server
+    yum:
+     name: "{{ packages }}"
+    vars:
+     packages:
+      - httpd
+      - httpd-tools
+     state: present
