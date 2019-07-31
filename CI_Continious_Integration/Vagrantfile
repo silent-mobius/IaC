@@ -40,6 +40,7 @@ Vagrant.configure("2") do |config|
     ans.vm.box="centos/7"
     ans.vm.hostname="ansible"
     ans.vm.network "private_network", ip: "10.0.50.100"
+    ans.vm.synced_folder "./provision", "/home/vagrant/provsion"
   end
 
   config.vm.define "ans" do |ans|
