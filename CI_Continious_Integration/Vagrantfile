@@ -1,0 +1,65 @@
+
+$script=<<-SCRIPT
+echo "starting automation provision"
+
+SCRIPT
+
+$script2=<<-SCRIPT
+echo "starting jenkins provision"
+sudo yum install -y java-1.8.0-openjdk-devel
+sleep 1 
+curl --silent --location http://pkg.jenkins-ci.org/redhat-stable/jenkins.repo | sudo tee /etc/yum.repos.d/jenkins.repo
+sleep 1 
+sudo rpm --import https://jenkins-ci.org/redhat/jenkins-ci.org.key
+sleep 1 
+sudo yum install -y jenkins
+sleep 1
+sudo systemctl enable --now jenkins
+sleep 1 
+clear
+sleep 1
+sudo cat /var/lib/jenkins/secrets/initialAdminPassword
+sleep 5
+echo "done "
+SCRIPT
+
+$web_script=<<-SCRIPT
+echo "starting provision"
+
+
+SCRIPT
+
+$db_script=<<-SCRIPT
+echo "starting provision"
+
+
+SCRIPT
+
+Vagrant.configure("2") do |config|
+  config.vm.define "ans" do |ans|
+    ans.vm.box="centos/7"
+    ans.vm.hostname="ansible"
+    ans.vm.network "private_network", ip: "10.0.50.100"
+  end
+
+  config.vm.define "ans" do |ans|
+    ci.vm.box="centos/7"
+    ci.vm.hostname="Jenkins"
+    ci.vm.network "private_network", ip: "10.0.50.101"
+    ci.vm.provision "shell", inline: $script2
+  end
+
+  config.vm.define "web" do |web|
+     web.vm.box="centos/7"
+     web.vm.hostname="web"
+     web.vm.network "private_network", ip: "10.0.50.102"
+     web.vm.provision "shell", inline: $web_script
+   end
+
+   config.vm.define "db" do |db|
+      db.vm.box="centos/7"
+      db.vm.hostname="db"
+      db.vm.network "private_network", ip: "10.0.50.103"
+      db.vm.provision "shell", inline: $db_script
+    end
+end
