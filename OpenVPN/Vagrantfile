@@ -1,0 +1,20 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# All Vagrant configuration is done below. The "2" in Vagrant.configure
+# configures the configuration version (we support older styles for
+# backwards compatibility). Please don't change it unless you know what
+# you're doing.
+Vagrant.configure("2") do |config|
+  config.vm.define "vpn" do |vpn|
+    vpn.vm.box="centos/7"
+    vpn.vm.hostname="ansible"
+    vpn.vm.network "private_network", ip: "10.0.80.100"
+  end
+
+  config.vm.define "vpnc" do |vpnc|
+    vpnc.vm.box="centos/7"
+    vpnc.vm.hostname="ansible"
+    vpnc.vm.network "private_network", ip: "10.0.80.101"
+  end
+end
