@@ -8,8 +8,9 @@
 
 #use these tutorials":
 #https://www.tecmint.com/create-luns-using-lvm-in-iscsi-target/
+################################################################################
 #https://www.server-world.info/en/note?os=CentOS_7&p=iscsi&f=1
-#
+################################################################################
 disk2='./sdb.vdi'
 
 $srvscript=<<-SCRIPT
