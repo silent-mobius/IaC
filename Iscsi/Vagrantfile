@@ -1,0 +1,26 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# All Vagrant configuration is done below. The "2" in Vagrant.configure
+# configures the configuration version (we support older styles for
+# backwards compatibility). Please don't change it unless you know what
+# you're doing.
+disk2='./sdb.vdi'
+
+
+Vagrant.configure("2") do |config|
+  config.vm.define "iscsisrv" do |iscsisrv|
+    iscsisrv.vm.box="centos/7"
+    iscsisrv.vm.hostname="iscsiinitiator"
+    iscsisrv.vm.network "private_network", ip: "10.0.90.100"
+    iscsisrv.vm.customize ['createhd', '--filename', disk2, '--size', 10 * 1024]
+    iscsisrv.vm.customize ['storageattach', :id, '--storagectl', 'SATA Controller', '--port', 1, '--device', 0, '--type', 'hdd', '--medium', disk2]
+  end
+
+
+  config.vm.define "iscsic" do |iscsic|
+    iscsic.vm.box="centos/7"
+    iscsic.vm.hostname="iscsiinitiator"
+    iscsic.vm.network "private_network", ip: "10.0.90.100"
+  end
+end
