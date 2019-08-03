@@ -5,22 +5,56 @@
 # configures the configuration version (we support older styles for
 # backwards compatibility). Please don't change it unless you know what
 # you're doing.
+
+#use these tutorials":
+#https://www.tecmint.com/create-luns-using-lvm-in-iscsi-target/
+#https://www.server-world.info/en/note?os=CentOS_7&p=iscsi&f=1
+#
 disk2='./sdb.vdi'
 
+$srvscript=<<-SCRIPT
+echo "starting iscsi provisioner srv"
+
+yum -y install iscsi-initiator-utils targetcli
+
+sed 's/^SELINUX=enforcing/^SELINUX=disabled/'
+
+sleep 1
+
+echo "selinux status changed --> need to restart"
+
+sleep 1
+SCRIPT
+
+$cscript=<<-SCRIPT
+echo "starting iscsi client"
+
+yum -y install iscsi-initiator-utils
+
+sleep 1
+
+sed 's/^SELINUX=enforcing/^SELINUX=disabled/'
+
+sleep 1
+
+echo "selinux status changed --> need to restart"
+SCRIPT
 
 Vagrant.configure("2") do |config|
   config.vm.define "iscsisrv" do |iscsisrv|
     iscsisrv.vm.box="centos/7"
-    iscsisrv.vm.hostname="iscsiinitiator"
+    iscsisrv.vm.hostname="target"
     iscsisrv.vm.network "private_network", ip: "10.0.90.100"
     iscsisrv.vm.customize ['createhd', '--filename', disk2, '--size', 10 * 1024]
     iscsisrv.vm.customize ['storageattach', :id, '--storagectl', 'SATA Controller', '--port', 1, '--device', 0, '--type', 'hdd', '--medium', disk2]
+    iscsisrv.vm.provisio :shell, inline: $srvscript
   end
 
 
   config.vm.define "iscsic" do |iscsic|
     iscsic.vm.box="centos/7"
-    iscsic.vm.hostname="iscsiinitiator"
-    iscsic.vm.network "private_network", ip: "10.0.90.100"
+    iscsic.vm.hostname="initiator"
+    iscsic.vm.network "private_network", ip: "10.0.90.101"
+    iscsic.vm.provision :shell, inline: $cscript
   end
 end
