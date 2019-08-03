@@ -5,16 +5,50 @@
 # configures the configuration version (we support older styles for
 # backwards compatibility). Please don't change it unless you know what
 # you're doing.
+
+
+###########################################################################
+#build on https://www.howtoforge.com/tutorial/how-to-install-openvpn-on-centos-7/ tutorial
+##########################################################################
+
+
+$script=<<-SCRIPT
+echo "starting script provision"
+
+yum install -y  epel-release
+
+sleep 1
+
+yum install -y openvpn easy-rsa
+
+sleep 1
+
+if [[ -d /usr/share/easy-rsa/ ]];then
+  cp -r /usr/share/easy-rsa/ /etc/openvpn/
+fi
+
+sleep 1
+
+sed 's/^SELINUX=enforcing/^SELINUX=disabled/'
+sleep 1
+
+echo "selinux status changed --> need to restart"
+
+SCRIPT
+
+
+
 Vagrant.configure("2") do |config|
   config.vm.define "vpn" do |vpn|
     vpn.vm.box="centos/7"
-    vpn.vm.hostname="ansible"
+    vpn.vm.hostname="vpnserver"
     vpn.vm.network "private_network", ip: "10.0.80.100"
+    vpn.vm.provision "shell", inline: $script
   end
 
   config.vm.define "vpnc" do |vpnc|
     vpnc.vm.box="centos/7"
-    vpnc.vm.hostname="ansible"
+    vpnc.vm.hostname="vpnclient"
     vpnc.vm.network "private_network", ip: "10.0.80.101"
   end
 end
