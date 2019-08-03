@@ -12,29 +12,28 @@
 #
 ###############################################################################
 
-raid1="./sdb.vdi"
-raid2="./sdc.vdi"
-raid3="./sdd.vdi"
+raid1 = './sdb.vdi'
+#raid2 = "./sdc.vdi"
+#raid3 = "./sdd.vdi"
 
 Vagrant.configure("2") do |config|
   config.vm.define "raid" do |raid|
     raid.vm.box="centos/7"
     raid.vm.hostname="ansible"
-    raid.vm.network "private_network", ip: "10.0.50.100"
+    raid.vm.network "private_network", ip: "10.0.180.100"
     raid.vm.provider "virtualbox" do |vb|
       unless File.exist?('./sdb.vdi')
-        vb.customize ['createhd', '--filename', './sdb.vdi', '--variant', 'Fixed', '--size', 10 * 1024]
+        vb.customize ['createhd', '--filename', raid1, '--variant', 'Fixed', '--size', 10 * 1024]
       end
-      unless File.exist?('./sdc.vdi')
-        vb.customize ['createhd', '--filename', './sdc.vdi', '--variant', 'Fixed', '--size', 10 * 1024]
-      end
-      unless File.exist?('./sdd.vdi')
-        vb.customize ['createhd', '--filename', './sdd.vdi', '--variant', 'Fixed', '--size', 10 * 1024]
-      end
+#      unless File.exist?('./sdc.vdi')
+#        vb.customize [ "createmedium", "disk", "--filename", raid2, "--format", "vmdk", "--size", 1024 * 10 ]
+#      end
+#      unless File.exist?('./sdd.vdi')
+#        vb.customize [ "createmedium", "disk", "--filename", raid3, "--format", "vmdk", "--size", 1024 * 10 ]
+#      end
       vb.memory = "1024"
-      vb.customize ['storageattach', :id,  '--storagectl', 'SATA', '--port', 1, '--device', 0, '--type', 'hdd', '--medium', './sdb.vdi']
-      vb.customize ['storageattach', :id,  '--storagectl', 'SATA', '--port', 2, '--device', 0, '--type', 'hdd', '--medium', './sdc.vdi']
-      vb.customize ['storageattach', :id,  '--storagectl', 'SATA', '--port', 3, '--device', 0, '--type', 'hdd', '--medium', './sdd.vdi']
+      vb.customize ['storageattach', :id,  '--storagectl', 'SATA', '--port', 1, '--device', 0, '--type', 'hdd', '--medium', './sdb.vdi']#      vb.customize ['storageattach', :id,  '--storagectl', 'SATAController', '--port', 2, '--device', 0, '--type', 'hdd', '--medium', raid2]
+#      vb.customize ['storageattach', :id,  '--storagectl', 'SATAController', '--port', 3, '--device', 0, '--type', 'hdd', '--medium', raid3]
     end
   end
 end
