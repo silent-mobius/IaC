@@ -1,28 +1,37 @@
 Name:           chs4linux
 Version:        4.1.3
-Release:        1.0.0
+Release:        1%{?dist}
 Summary:        An Advance Tool Linux Server Hardening
-
-Group:          Calcom
-BuildArch:      noarch
 License:        Propaitery
 URL:            https://calcomsoftware.com
 Source0:        chs4linux-4.1.3.tar.gz
-Requires:       audit,procps,psacct,nc,rsync,setools-console
+Requires:       bash
+Requires:       audit
+Requires:       procps
+Requires:       psacct
+Requires:       nc
+Requires:       rsync
+Requires:       setools-console
+BuildArch:      noarch
 
 %description
-advanced hardening tool for RH linux systems
+Advanced hardening tool for RH Linux systems
 
 %prep
-%setup -q -n %{name}-%{version}
-%build
-%install
-install -m 0755 -d $RPM_BUILD_ROOT/
+#%setup
 
+
+%install
+
+mkdir -p $RPM_BUILD_ROOT
+cp -R * $RPM_BUILD_ROOT
+
+%clean
+rm -rf $RPM_BUILD_ROOT
 
 %files
-
+/usr/chs4linux/*
 
 %changelog
-* Thu Sep 5 2019    Alex M. Schapelle 4.1.3
-  - Initial rpm release
+* Thu Sep 5 2019    Alex M. Schapelle alex@vaiolabs.com 4.1.3
+- Initial rpm release
