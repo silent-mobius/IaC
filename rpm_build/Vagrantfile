@@ -5,6 +5,15 @@
 # configures the configuration version (we support older styles for
 # backwards compatibility). Please don't change it unless you know what
 # you're doing.
+
+$script =--> SCRIPT
+
+yum localinstall --nogpgcheck https://download1.rpmfusion.org/free/el/rpmfusion-free-release-7.noarch.rpm https://download1.rpmfusion.org/nonfree/el/rpmfusion-nonfree-release-7.noarch.rpm
+yum update -y
+
+yum groupinstall "Development tools" ""
+
+SCRIPT
 Vagrant.configure("2") do |config|
 
 
