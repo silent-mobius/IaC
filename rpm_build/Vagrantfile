@@ -11,15 +11,18 @@ $script =<<-SCRIPT
 yum localinstall --nogpgcheck https://download1.rpmfusion.org/free/el/rpmfusion-free-release-7.noarch.rpm https://download1.rpmfusion.org/nonfree/el/rpmfusion-nonfree-release-7.noarch.rpm
 yum update -y
 
-yum groupinstall "Development tools" ""
+yum groupinstall -y "Development tools" "Compatibility Libraries"
+
+yum install rpm-build
+
+mkdir -p ~/rpmbuild/{BUILD,RPMS,SOURCES,SPECS,SRPMS}
 
 SCRIPT
 Vagrant.configure("2") do |config|
 
   config.vm.define "build" do |b|
     b.vm.box="centos/7"
-    b.vm.hostname="ansible"
+    b.vm.hostname="pkgbuild"
     b.vm.network "private_network", ip: "10.0.1.100"
     b.vm.synced_folder "./sources", "/home/vagrant/sources"
-
 end
