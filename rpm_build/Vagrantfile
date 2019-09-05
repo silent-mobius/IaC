@@ -16,6 +16,10 @@ yum groupinstall "Development tools" ""
 SCRIPT
 Vagrant.configure("2") do |config|
 
-
+  config.vm.define "build" do |b|
+    b.vm.box="centos/7"
+    b.vm.hostname="ansible"
+    b.vm.network "private_network", ip: "10.0.1.100"
+    b.vm.synced_folder "./sources", "/home/vagrant/sources"
 
 end
