@@ -14,14 +14,14 @@ Requires:       audit,procps,psacct,nc,rsync,setools-console
 advanced hardening tool for RH linux systems
 
 %prep
-%setup -q
+%setup -q -n %{name}-%{version}
 %build
 %install
 install -m 0755 -d $RPM_BUILD_ROOT/
 
 
 %files
-/usr/chs4linux
+
 
 %changelog
 * Thu Sep 5 2019    Alex M. Schapelle 4.1.3
