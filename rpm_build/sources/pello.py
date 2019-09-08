@@ -26,9 +26,8 @@ def deco(user):
 
     print(pre_+"\n"+"# hello "+ user+"\n"+post)
 
-
-
-
+####
+#Main - _- _- _- _- _- _- _- _- _- _- _- _- _- _- _- _- _- _- _- _- _- _- _- _- _
 ####
 if __name__ == "__main__":
     if os.getuid() == 0:
