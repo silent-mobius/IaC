@@ -20,7 +20,17 @@ SCRIPT
 
 $script2=<<-SCRIPT2
 
+yum update -y
 
+sed -i s/SELINUX=enforcing/SELINUX=permissive/ /etc/selinux/config
+
+echo "
+[rhel7]
+name = rhel-7-rpms
+baseurl = http://10.0.1.100/rhel6/
+gpgcheck = 0
+enabled = 1
+" > /etc/yum.repos.d/private.repo
 SCRIPT2
 
 Vagrant.configure("2") do |config|
