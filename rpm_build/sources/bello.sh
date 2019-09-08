@@ -4,7 +4,7 @@
 #developer: pushtakio
 #purpose: to say hello
 #date: 08/09/2019
-#ver: 1.0.12
+#ver: 1.0.14
 ################################################################################
 
 
@@ -12,7 +12,7 @@
 _time=2
 line="#########################################################################"
 msg_root="This Tool Can Not Be Used With $EUID User"
-msg_permssions="Please Decrease your level toregular user"
+msg_permssions="Please Decrease your level to regular user"
 ####Functions /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
 deco(){
   pre="$line"
