@@ -27,7 +27,7 @@ sed -i s/SELINUX=enforcing/SELINUX=permissive/ /etc/selinux/config
 echo "
 [rhel7]
 name = rhel-7-rpms
-baseurl = http://10.0.1.100/rhel6/
+baseurl = http://10.0.1.100/pub/rhel7/
 gpgcheck = 0
 enabled = 1
 " > /etc/yum.repos.d/private.repo
@@ -44,7 +44,7 @@ Vagrant.configure("2") do |config|
    config.vm.define "client" do |c|
       c.vm.box="centos/7"
       c.vm.hostname="ansible"
-      c.vm.network "private_network", ip: "10.0.1.100"
+      c.vm.network "private_network", ip: "10.0.1.101"
       c.vm.provision "shell", inline: $script
     end
 end
