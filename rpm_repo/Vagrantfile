@@ -5,6 +5,24 @@
 # configures the configuration version (we support older styles for
 # backwards compatibility). Please don't change it unless you know what
 # you're doing.
+
+$script=<<-SCRIPT
+sed -i s/SELINUX=enforcing/SELINUX=permissive/ /etc/selinux/config
+yum update -y
+yum install httpd -y
+yum install php -y
+
+
+
+
+SCRIPT
+
+
 Vagrant.configure("2") do |config|
-  
+  config.vm.define "repo" do |r|
+     r.vm.box="centos/7"
+     r.vm.hostname="ansible"
+     r.vm.network "private_network", ip: "10.0.1.100"
+     r.vm.provision "shell", inline: $script
+   end
 end
