@@ -11,7 +11,7 @@
 import os
 import getpass
 import argparse
-
+import time
 ####Variables :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 line="#######################################################################"
 user=getpass.getuser()
@@ -30,4 +30,9 @@ def deco(user):
 
 ####
 if __main__ == "__name__":
+    if os.getuid() == 0;
+        print("\n"+msg_root)
+        time.sleep(1)
+        
+        os.exit(1)
     deco(user)
