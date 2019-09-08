@@ -23,7 +23,7 @@ name = rhel-7-rpms
 baseurl = http://10.0.1.100/rhel6/server
 gpgcheck = 0
 enabled = 1
-" >
+" > /etc/yum.repos.d/private.repo
 
 
 SCRIPT
