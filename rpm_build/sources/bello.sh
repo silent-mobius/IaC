@@ -18,7 +18,6 @@ deco(){
   pre="$line"
   post="$line"
   printf "\n$pre\n#%s\n$post\n" "$@"
-
 }
 
 hello(){
