@@ -9,6 +9,7 @@
 
 #### imports
 import os
+import sys
 import getpass
 import argparse
 import time
@@ -23,16 +24,20 @@ def deco(user):
     pre_=line
     post=line
 
-    print(pre+"\n"+"# hello "+ user+"\n"+post)
+    print(pre_+"\n"+"# hello "+ user+"\n"+post)
 
 
 
 
 ####
-if __main__ == "__name__":
-    if os.getuid() == 0;
+if __name__ == "__main__":
+    if os.getuid() == 0:
         print("\n"+msg_root)
         time.sleep(1)
-        
-        os.exit(1)
-    deco(user)
+        os.system('cls' if os.name == 'nt' else 'clear')
+        sys.exit(1)
+    else:
+        deco(user)
+        time.sleep(1)
+        os.system('cls' if os.name == 'nt' else 'clear')
+        sys.exit()
