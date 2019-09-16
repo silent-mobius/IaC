@@ -16,7 +16,7 @@ SCRIPT
 $script2 = <<-SCRIPT
 echo "Starting Provisioning..."
 yum -y install nfs-utils
-systemctl enable --now rpcbind 
+systemctl enable --now rpcbind
 SCRIPT
 
 Vagrant.configure("2") do |config|
