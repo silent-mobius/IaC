@@ -18,7 +18,7 @@ raid1 = './sdb.vdi'
 
 Vagrant.configure("2") do |config|
   config.vm.define "raid" do |raid|
-    raid.vm.box="centos/7"
+    raid.vm.box="generic/centos7"
     raid.vm.hostname="ansible"
     raid.vm.network "private_network", ip: "10.0.180.100"
     raid.vm.provider "virtualbox" do |vb|

@@ -35,7 +35,7 @@ SCRIPT
 
 Vagrant.configure("2") do |config|
   config.vm.define "rtr" do |rtr|
-     rtr.vm.box="centos/7"
+     rtr.vm.box="generic/centos7"
      rtr.vm.hostname="router"
      rtr.vm.network "private_network", ip: "10.0.10.110"
      rtr.vm.network "public_network", bridge: "wlp3s0:ens0p8"
@@ -43,13 +43,13 @@ Vagrant.configure("2") do |config|
    end
 
    config.vm.define "client1" do |client1|
-      client1.vm.box="centos/7"
+      client1.vm.box="generic/centos7"
       client1.vm.hostname="netclient1"
       client1.vm.network "private_network", ip: "10.0.10.111"
     end
 
     config.vm.define "client2" do |client2|
-       client2.vm.box="centos/7"
+       client2.vm.box="generic/centos7"
        client2.vm.hostname="netclient2"
        client2.vm.network "private_network", ip: "10.0.10.112"
      end

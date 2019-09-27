@@ -35,14 +35,14 @@ SCRIPT2
 
 Vagrant.configure("2") do |config|
   config.vm.define "repo" do |r|
-     r.vm.box="centos/7"
+     r.vm.box="generic/centos7"
      r.vm.hostname="ansible"
      r.vm.network "private_network", ip: "10.0.1.100"
      r.vm.provision "shell", inline: $script
    end
 
    config.vm.define "client" do |c|
-      c.vm.box="centos/7"
+      c.vm.box="generic/centos7"
       c.vm.hostname="ansible"
       c.vm.network "private_network", ip: "10.0.1.101"
       c.vm.provision "shell", inline: $script

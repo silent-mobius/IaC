@@ -21,14 +21,14 @@ SCRIPT
 
 Vagrant.configure("2") do |config|
    config.vm.define "nfs2" do |nfs2|
-      nfs2.vm.box="centos/7"
+      nfs2.vm.box="generic/centos7"
       nfs2.vm.hostname="nfsresource"
       nfs2.vm.network "private_network", ip: "10.0.0.31"
       nfs2.vm.provision "shell", inline: $script
     end
 
     config.vm.define "nfs" do |nfs|
-      nfs.vm.box="centos/7"
+      nfs.vm.box="generic/centos7"
       nfs.vm.hostname="nfswww"
       nfs.vm.network "private_network", ip: "10.0.0.30"
       nfs.vm.provision "shell", inline: $script2

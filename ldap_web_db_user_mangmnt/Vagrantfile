@@ -5,6 +5,27 @@
 # configures the configuration version (we support older styles for
 # backwards compatibility). Please don't change it unless you know what
 # you're doing.
-Vagrant.configure("2") do |config|
+$script = <<-SCRIPT
+echo "Starting Provisioning..."
 
+SCRIPT
+
+$script2 = <<-SCRIPT
+echo "Starting Provisioning..."
+
+SCRIPT
+Vagrant.configure("2") do |config|
+    config.vm.define "activedir" do |ac|
+        ac.vm.box="generic/centos7"
+        ac.vm.hostname="activedirectvoryonlinux"
+        ac.vm.network "private_network", ip: "10.10.0.10"
+        ac.vm.provision "shell", inline: $script
+      end
+
+      config.vm.define "acd" do |acd|
+        acd.vm.box="generic/centos7"
+        acd.vm.hostname="client"
+        acd.vm.network "private_network", ip: "10.10.0.11"
+        acd.vm.provision "shell", inline: $script2
+      end
 end

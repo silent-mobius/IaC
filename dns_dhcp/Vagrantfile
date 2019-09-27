@@ -17,14 +17,14 @@ SCRIPT
 
 Vagrant.configure("2") do |config|
    config.vm.define "dns" do |dns|
-      dns.vm.box="centos/7"
+      dns.vm.box="generic/centos7"
       dns.vm.hostname="dnsdhcpsrv"
       dns.vm.network "private_network", ip: "10.0.10.100"
       dns.vm.provision "shell", inline: $script
     end
 
     config.vm.define "dnsc" do |dnsc|
-      dnsc.vm.box="centos/7"
+      dnsc.vm.box="generic/centos7"
       dnsc.vm.hostname="dnsclient"
       dnsc.vm.network "private_network", ip: "10.0.10.101"
       dnsc.vm.provision "shell", inline: $script2

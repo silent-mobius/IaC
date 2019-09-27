@@ -5,6 +5,16 @@
 # configures the configuration version (we support older styles for
 # backwards compatibility). Please don't change it unless you know what
 # you're doing.
+$script = <<-SCRIPT
+echo "Starting Provisioning..."
+
+SCRIPT
+
 Vagrant.configure("2") do |config|
-  
+    config.vm.define "web_db" do |d|
+        d.vm.box="generic/centos7"
+        d.vm.hostname="webusermanagment"
+        d.vm.network "private_network", ip: "10.3.0.10"
+        d.vm.provision "shell", inline: $script
+      end
 end
