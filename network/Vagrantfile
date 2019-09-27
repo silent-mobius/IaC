@@ -13,7 +13,7 @@ SCRIPT
 Vagrant.configure("2") do |config|
     config.vm.define "net" do |n|
         n.vm.box="generic/centos7"
-        n.vm.hostname="webusermanagment"
+        n.vm.hostname="networksrv"
         n.vm.network "private_network", ip: "10.5.0.10"
         n.vm.provision "shell", inline: $script
       end
