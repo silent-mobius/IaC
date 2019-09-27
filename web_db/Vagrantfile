@@ -13,7 +13,7 @@ SCRIPT
 Vagrant.configure("2") do |config|
     config.vm.define "web_db" do |d|
         d.vm.box="generic/centos7"
-        d.vm.hostname="webusermanagment"
+        d.vm.hostname="webdb"
         d.vm.network "private_network", ip: "10.3.0.10"
         d.vm.provision "shell", inline: $script
       end
