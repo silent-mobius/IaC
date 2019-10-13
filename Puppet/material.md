@@ -65,6 +65,8 @@ We learned some core traits of configuration management systems, including:
 
 Now that we have an understanding of these concepts, we can build off this to explore how Puppet achieves idempotency, and see what the language we will be using to actually configure our servers looks like.
 
+---
+
 # Resource Abstraction
 
 As a configuration management tool, Puppet needs to take our end state descriptions and somehow convert them to work across multiple platforms. To do this, it utilizes something called the resource abstraction layer (RAL), which allows us to write simplified code that Puppet can then take and adapt as needed. After all, think of all the ways our servers can differ: We have different init systems, different package managers, even different commands to add and remove users.
@@ -113,6 +115,8 @@ Resources
     [Resource Types List - Puppet 6.4](https://puppet.com/docs/puppet/6.4/type.html)
     [Resource Types List - Puppet 5.5](https://puppet.com/docs/puppet/5.5/type.html)
 
+---
+
 # Puppet Architecture
 Puppet uses a "master-agent" setup, where a primary server — known as the Puppet master — stores configuration information that is queried by the agents, which are our managed nodes. This setup is consistent across both versions of Puppet — open source and enterprise — with the caveat that in versions prior to Puppet 6, we had the option of running a standalone Puppet architecture using the Puppet apply application.
 
@@ -145,3 +149,31 @@ In this lesson, we learned the difference between Puppet Open Source and Puppet 
 * Puppet Enterprise compile masters run similar to open source Puppet, but also contain a file sync server that receives updated Puppet Code from Code Manager
 
 Now, this might seem like a lot of data at once — because it very much is. However, we'll get more in-depth with each of these tools as we move on through the course, starting in the next lesson by discussing catalog compilation.
+
+---
+
+# The Lifecycle of a Puppet Run
+
+At a high level, we understand that Puppet's resource abstraction layer takes our code and translates it so the agent can configure itself, but how does a Puppet run actually work?
+
+When a Puppet agent queries a master with a puppet agent -t, it begins a catalog compilation process. First, the agent initiates a handshake wherein certification information is shared. Assuming the connection to the master is successful, the master then creates a node object — a combination of information about a node, such as environment, parameters, and classes. Once created, the node object is sent to the agent node.
+
+The agent then makes any changes to the system it needs to enforce this node object, such as switching environments. Oftentimes this object is blank, and the node is configured based on its own parameters.
+
+With the configuration finished, the agent requests a catalog from the master and sends along all facts recorded by **Facter** for the master to use. The master then evaluates the main manifest, which is a mapping of modules — or end-state configurations — to nodes. Once it matches the agent to a set of modules, the master evaluates any variables and data in those modules using facts about the agent and adds them to the catalog. Any modules referenced by other modules but not in the main manifest are also evaluated and added to the catalog.
+
+The catalog is then sent to the agent, which performs any changes described in the modules. If enabled, the agent will send a report to Puppet when finished.
+
+## Wrap Up
+
+We went through all the steps that occur during a Puppet run, including:
+
+* The agent and master complete a handshake and create a connection
+* The agent provides the master with facts about its system from Factor
+* The master provides the agent with a node object, which it uses to update parameters such as environment, if needed
+* The master provides the agent with a compiled catalog
+* The agent applies the catalog and returns a report (if reporting is enabled)
+
+And now that we know what Puppet's doing under the hood, we can start to get hands on and set up our environment.
+
+---
