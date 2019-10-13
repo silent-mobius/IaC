@@ -112,3 +112,36 @@ Resources
 
     [Resource Types List - Puppet 6.4](https://puppet.com/docs/puppet/6.4/type.html)
     [Resource Types List - Puppet 5.5](https://puppet.com/docs/puppet/5.5/type.html)
+
+# Puppet Architecture
+Puppet uses a "master-agent" setup, where a primary server — known as the Puppet master — stores configuration information that is queried by the agents, which are our managed nodes. This setup is consistent across both versions of Puppet — open source and enterprise — with the caveat that in versions prior to Puppet 6, we had the option of running a standalone Puppet architecture using the Puppet apply application.
+
+To break down everything that Puppet contains, we're going to look at it starting from the components in all Puppet setups, then add on our additional Puppet Enterprise features.
+
+## Master (Open Source and Enterprise)
+
+All Puppet masters are comprised of the Puppet Server and certification authority. The Puppet Server is a Java Virtual Machine and compiles our Puppet code for use on our agents, while the certificate authority lets us manage our master and agent certificates so Puppet is only communicating with hosts we deem safe. We also have the option to add PuppetDB (automatically added in Enterprise), which collects Puppet-generated data and enables some advanced features. PuppetDB can also be accessed by other services that may need Puppet data.
+
+## Agent (Open Source and Enterprise)
+
+The Puppet Agent application needs to be on all nodes we manage with Puppet — including our masters! The Puppet agent runs as a background service and periodically queries for compiled Puppet code from the server to enforce change with. Puppet agents also contain Facter, which records facts about our system that are then passed to the master. We can use these facts in our Puppet code.
+
+## Master of Masters (Puppet Enterprise)
+
+PE adds the concept of a "Master of Masters" — or a Puppet master that contains all the additional features of PE. This includes the Puppet server and certificate authority, as well as role-based access control, orchestration for both multi-tiered applications and on-demand Puppet runs, a node classifier that lets us assign code to managed systems, and a web-based console that lets us manage much of the previously-mentioned tools. The Master of Masters also contains Code Manager and a file sync client, which are used to ensure our Puppet code is consistent across a multi-master setup.
+
+## Compile Masters
+
+Using compile masters is entirely optional — depending on the size of your setup. Using only a Master of Masters, PE supports up to 4,000 nodes, which we can increase by 1,500 to 3,000 per additional master, depending on our PuppetDB limitations. A compile master contains the Puppet Server to compile code and the file sync server to receive and transmit Puppet code to the correct directory.
+
+## Wrap Up
+
+In this lesson, we learned the difference between Puppet Open Source and Puppet Enterprise, and viewed how PE builds off Puppet OS to provide a full-featured platform for managing our nodes. We also learned that:
+
+* A Puppet master coordinates the desired end state of a server with the Puppet agent
+* The Puppet Server is the component of the Puppet master that compiles our Puppet code for use
+* All nodes managed by Puppet run the Puppet agent application, including the Puppet master itself
+* Puppet Enterprise uses a "Master of Masters" which contains additional tools that allow for orchestration, code management, role-based access control, and more
+* Puppet Enterprise compile masters run similar to open source Puppet, but also contain a file sync server that receives updated Puppet Code from Code Manager
+
+Now, this might seem like a lot of data at once — because it very much is. However, we'll get more in-depth with each of these tools as we move on through the course, starting in the next lesson by discussing catalog compilation.
