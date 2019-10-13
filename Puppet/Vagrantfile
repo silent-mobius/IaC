@@ -1,0 +1,32 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# All Vagrant configuration is done below. The "2" in Vagrant.configure
+# configures the configuration version (we support older styles for
+# backwards compatibility). Please don't change it unless you know what
+# you're doing.
+Vagrant.configure("2") do |config|
+  config.vm.define 'pm' do |pm|
+    pm.vm.box='generic/centos7'
+    pm.vm.hostname='puppetmaster'
+    pm.vm.network 'private_network', ip: '10.4.0.100'
+  end
+
+  config.vm.define 'pc' do |pc|
+    pc.vm.box='generic/centos7'
+    pc.vm.hostname='puppetslave1'
+    pc.vm.network 'private_network', ip: '10.4.0.101'
+  end
+
+  config.vm.define 'pc2' do |pc2|
+    pc2.vm.box='generic/centos7'
+    pc2.vm.hostname='puppetslave2'
+    pc2.vm.network 'private_network', ip: '10.4.0.102'
+  end
+
+  config.vm.define 'pc3' do |pc3|
+    pc3.vm.box='generic/centos7'
+    pc3.vm.hostname='puppetslave3'
+    pc3.vm.network 'private_network', ip: '10.4.0.103'
+  end
+end
