@@ -1,0 +1,40 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# All Vagrant configuration is done below. The "2" in Vagrant.configure
+# configures the configuration version (we support older styles for
+# backwards compatibility). Please don't change it unless you know what
+# you're doing.
+
+$shell=<<-SHELL
+sudo yum install -y curl policycoreutils-python openssh-server
+
+sleep 1
+
+sudo systemctl enable sshd
+sudo systemctl start sshd
+sudo firewall-cmd --permanent --add-service=http
+sudo firewall-cmd --permanent --add-service=https
+sudo systemctl reload firewalld
+
+sleep 2
+
+sudo yum install postfix
+sudo systemctl enable postfix
+sudo systemctl start postfix
+
+if [ -e /usr/bin/gitlab ];then
+  curl https://packages.gitlab.com/install/repositories/gitlab/gitlab-ee/script.rpm.sh | sudo bash
+
+else
+  true
+fi
+SHELL
+
+Vagrant.configure("2") do |config|
+  config.vm.define 'ci' do |ci|
+    ci.vm.box = "generic/centos7"
+    ci.vm.hostname = 'ci'
+    ci.vm.network "forwarded_port", host: 80, guest:8080
+    ci.vm.provision 'shell',inline: $shell
+end
