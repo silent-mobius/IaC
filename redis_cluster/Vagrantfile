@@ -1,0 +1,60 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# All Vagrant configuration is done below. The "2" in Vagrant.configure
+# configures the configuration version (we support older styles for
+# backwards compatibility). Please don't change it unless you know what
+# you're doing.
+
+$script = <<-SCRIPT
+echo "starting redis cluster provisioning"
+echo "10.0.1.201  redis1" >> /etc/hosts
+echo "10.0.1.202  redis2" >> /etc/hosts
+echo "10.0.1.203  redis3" >> /etc/hosts
+
+sed -i 's/^SELINUX=enforcing/^SELINUX=permissive/g' /etc/selinux/config
+
+echo getting essential tools
+yum install -y epel-release wget 
+yum groupinstall -y "Compatibility Libraries" "Development Tools"
+
+echo getting redis sources
+sleep 1
+
+wget http://download.redis.io/redis-stable.tar.gz -P /home/vagrant/
+
+
+echo finished provission
+
+sleep 2
+SCRIPT
+
+
+Vagrant.configure("2") do |config|
+  config.vm.define "red" do |red|
+    red.vm.box="generic/centos7"
+    red.vm.hostname="redis1"
+    red.vm.network "private_network", ip: "10.0.1.201"
+    red.vm.network "forwarded_port", guest: 6379, host: 6379
+    red.vm.provision "shell", inline: $script
+  end
+
+  config.vm.define "red1" do |red1|
+    red1.vm.box="generic/centos7"
+    red1.vm.hostname="redis2"
+    red1.vm.network "private_network", ip: "10.0.1.202"
+    red1.vm.network "forwarded_port", guest: 6379, host: 16379
+    red1.vm.provision "shell", inline: $script
+  end
+
+  config.vm.define "red2" do |red2|
+    red2.vm.box="generic/centos7"
+    red2.vm.hostname="redis"
+    red2.vm.network "private_network", ip: "10.0.1.203"
+    red2.vm.network "forwarded_port", guest: 6379, host: 16389
+    red2.vm.provision "shell", inline: $script
+  end
+
+
+
+end
