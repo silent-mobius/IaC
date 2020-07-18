@@ -34,14 +34,14 @@ SCRIPT
 
 Vagrant.configure("2") do |config|
   config.vm.define "ans" do |ans|
-     ans.vm.box="generic/centos7"
+     ans.vm.box="generic/centos8"
      ans.vm.hostname="ansible"
      ans.vm.network "private_network", ip: "10.0.200.100"
      ans.vm.provision "shell", inline: $script
    end
 
    config.vm.define "web" do |web|
-      web.vm.box="generic/centos7"
+      web.vm.box="generic/centos8"
       web.vm.hostname="web"
       web.vm.network "private_network", ip: "10.0.200.101"
       web.vm.provision "shell", inline: $web_script
